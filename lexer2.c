@@ -62,6 +62,7 @@ t_token	*lexer2(char **str)
 	}
 	else if (isdigit(**str))
 	{
+		printf("found a float\n");
 		tok->type = value;
 		tok->value.v = parse_float(str);
 	}
