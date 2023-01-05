@@ -25,13 +25,12 @@ cleanup.c
 
 ifdef CHECK_MALLOC
 	SRCS += fake_malloc/fake_malloc.c
+	CFLAGS += -D LIMIT=$(CHECK_MALLOC)
 endif
 
-ifdef LIMIT
-	CFLAGS += -D LIMIT=$(LIMIT)
-endif 
-
-# Compiling with "make CHECK_MALLOC=1 LIMIT=3" will make sure the 3rd call of malloc will fail. Careful, it doesn't work with calloc, but it shouldn't be difficult to add that feature.
+# To test malloc failure:
+# 	compile with "make CHECK_MALLOC={?}"
+#	This will ensure the ?-th malloc or calloc call will fail.
 
 OBJS = $(SRCS:%.c=%.o)
 
