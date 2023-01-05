@@ -31,6 +31,8 @@ ifdef LIMIT
 	CFLAGS += -D LIMIT=$(LIMIT)
 endif 
 
+# Compiling with "make CHECK_MALLOC=1 LIMIT=3" will make sure the 3rd call of malloc will fail. Careful, it doesn't work with calloc, but it shouldn't be difficult to add that feature.
+
 OBJS = $(SRCS:%.c=%.o)
 
 NAME = eval

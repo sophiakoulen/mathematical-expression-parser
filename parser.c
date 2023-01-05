@@ -156,7 +156,6 @@ int parse_factor(char **str, t_tree **tree)
 		tmp = create_node(tok, *tree, 0);
 		if (!tmp)
 		{
-			cleanup_tree(*tree);
 			free(tok);
 			return (-1);
 		}
