@@ -39,7 +39,7 @@ NAME = eval
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lm -o $@
+	$(CC) $(CFLAGS) $(OBJS) -lm -ldl -o $@
 
 clean:
 	$(RM) $(OBJS)
