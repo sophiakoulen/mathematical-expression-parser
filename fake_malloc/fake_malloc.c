@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <dlfcn.h>
 #include <sys/errno.h>
 #include <stdlib.h>
