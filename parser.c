@@ -104,7 +104,6 @@ int	parse_term(char **str, t_tree **left_tree)
 			tmp = create_node(tok, *left_tree, right_tree);
 			if (!tmp)
 			{
-				cleanup_tree(*left_tree);
 				cleanup_tree(right_tree);
 				free(tok);
 			}
