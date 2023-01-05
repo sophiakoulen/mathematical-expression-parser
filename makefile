@@ -23,6 +23,14 @@ tree_ops.c \
 args.c \
 cleanup.c
 
+ifdef CHECK_MALLOC
+	SRCS += fake_malloc/fake_malloc.c
+endif
+
+ifdef LIMIT
+	CFLAGS += -D LIMIT=$(LIMIT)
+endif 
+
 OBJS = $(SRCS:%.c=%.o)
 
 NAME = eval
