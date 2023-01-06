@@ -1,16 +1,20 @@
 #include "eval.h"
 
+extern t_tree	*tok_list;
+
 t_token *scan_token(char *str)
 {
-	return (lexer(&str));
+	(void)str;
+	if (!tok_list)
+		return (0);
+	else
+		return (tok_list->tok);
 }
 
 void next_token(char **str)
 {
-	t_token *tok;
-
-	tok = lexer(str);
-	free(tok);
+	(void)str;
+	tok_list = tok_list->right;
 }
 
 t_token *lexer(char **str)
