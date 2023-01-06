@@ -5,7 +5,7 @@ t_value	evaluate(t_tree *tree)
 	t_token		*tok;
 
 	tok = tree->tok;
-	if(tok->type == operation)
+	if(tok->type == symbol)
 	{
 		switch(tok->value.c)
 		{

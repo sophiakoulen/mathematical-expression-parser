@@ -1,5 +1,12 @@
 #include "eval.h"
 
+/*
+	tok_list is a global variable that will contain the linked list of tokens.
+	We also need to keep a reference to the start of the list.
+*/
+t_tree	*tok_list;
+t_tree	*tok_start;
+
 int main(int argc, char **argv)
 {
 	char	*expr;
@@ -14,11 +21,15 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	tree = 0;
-	if ((status = parse_expression(&expr, &tree)) != -1)
+
+	tok_list = construct_tok_list(expr);
+	tok_start = tok_list;
+
+	if ((status = parse_expression(&tree)) != -1)
 	// if ((status = parse_expression(&argv[1], &tree)) != -1)
 	{
-		tok = scan_token(expr);
-		if (tree == NULL || tok)
+		tok = scan_token();
+		if (tree == NULL || (tok && tok->type != end))
 		{
 			printf("Error while parsing tree\n");
 			status = 1;
@@ -32,8 +43,8 @@ int main(int argc, char **argv)
 		{
 			auto_print_tree(tree);
 		}
-		free(tok);
 	}
-	cleanup_tree(tree);
+	cleanup_token_list(tok_start);
+	//cleanup_tree(tree);
 	return (status);
 }
