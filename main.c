@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	}
 	tree = 0;
 
-	tok_list = tokenizer(expr);
+	tok_list = construct_tok_list(expr);
 
 	if ((status = parse_expression(&expr, &tree)) != -1)
 	// if ((status = parse_expression(&argv[1], &tree)) != -1)
