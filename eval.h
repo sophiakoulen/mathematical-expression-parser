@@ -64,13 +64,13 @@ void	cleanup_token_list(t_tree *list);
 t_value	evaluate(t_tree *tree);
 
 //lexer.c
-t_token	*scan_token(char *str);
-void	next_token(char **str);
+t_token	*scan_token(void);
+void	next_token(void);
 t_token	*lexer(char **str);
 
 //lexer.c
-t_tree	*tokenizer(char *str);
-t_token	*lexer2(char **str);
+t_tree	*construct_tok_list(char *str);
+t_token	*lexer(char **str);
 
 //parse_float.c
 t_value parse_float(char **str);

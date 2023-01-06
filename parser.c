@@ -41,7 +41,7 @@ int	parse_expression(char **str, t_tree **left_tree)
 	}
 	while (1)
 	{
-		tok = scan_token(*str);
+		tok = scan_token();
 		if (!tok || tok->type == end)
 			return 0;
 		if (!(tok->type == symbol && (tok->value.c == '+' || tok->value.c == '-')))
@@ -50,7 +50,7 @@ int	parse_expression(char **str, t_tree **left_tree)
 		}
 		else
 		{
-			next_token(str);
+			next_token();
 			if (parse_term(str, &right_tree) == -1)
 			{
 				cleanup_tree(right_tree);
@@ -80,7 +80,7 @@ int	parse_term(char **str, t_tree **left_tree)
 	}
 	while (1)
 	{
-		tok = scan_token(*str);
+		tok = scan_token();
 		if (!tok || tok->type == end)
 			return (0);
 		if (!(tok->type == symbol && (tok->value.c == '*' || tok->value.c == '/')))
@@ -89,7 +89,7 @@ int	parse_term(char **str, t_tree **left_tree)
 		}
 		else
 		{
-			next_token(str);
+			next_token();
 			if (parse_factor(str, &right_tree) == -1)
 			{
 				cleanup_tree(right_tree);
@@ -110,13 +110,13 @@ int parse_factor(char **str, t_tree **tree)
 	t_token *tok;
 	t_tree	*tmp;
 
-	tok = scan_token(*str);
+	tok = scan_token();
 	if (!tok || tok->type == end) // check if scan_token returned a valid token
 	{
 		printf("Parse error: unexpected end of input\n");
 		return -1;
 	}
-	next_token(str);
+	next_token();
 	if (tok->type == symbol && tok->value.c == '(')
 	{
 		if (parse_expression(str, tree) == -1)
@@ -124,10 +124,10 @@ int parse_factor(char **str, t_tree **tree)
 			return (-1);
 		}
 		// Check if the next token is a close parenthesis
-		tok = scan_token(*str);
+		tok = scan_token();
 		if (tok && tok->type == symbol && tok->value.c == ')')
 		{
-			next_token(str);
+			next_token();
 		}
 		else
 		{
