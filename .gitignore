@@ -83,3 +83,5 @@ fabric.properties
 
 # custom stuff
 *.o
+fake_malloc
+Dockerfile
