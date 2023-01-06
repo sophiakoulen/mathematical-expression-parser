@@ -19,10 +19,10 @@ int main(int argc, char **argv)
 
 	tok_list = construct_tok_list(expr);
 
-	if ((status = parse_expression(&expr, &tree)) != -1)
+	if ((status = parse_expression(&tree)) != -1)
 	// if ((status = parse_expression(&argv[1], &tree)) != -1)
 	{
-		tok = scan_token(expr);
+		tok = scan_token();
 		if (tree == NULL || (tok && tok->type != end))
 		{
 			printf("Error while parsing tree\n");
