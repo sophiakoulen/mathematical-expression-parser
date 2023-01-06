@@ -53,13 +53,13 @@ int	parse_expression(char **str, t_tree **left_tree)
 			next_token();
 			if (parse_term(str, &right_tree) == -1)
 			{
-				cleanup_tree(right_tree);
+				//cleanup_tree(right_tree);
 				return (-1);
 			}
 			tmp = create_node(tok, *left_tree, right_tree);
 			if (!tmp)
 			{
-				cleanup_tree(right_tree);
+				//cleanup_tree(right_tree);
 				return (-1);
 			}
 			*left_tree = tmp;
@@ -92,13 +92,13 @@ int	parse_term(char **str, t_tree **left_tree)
 			next_token();
 			if (parse_factor(str, &right_tree) == -1)
 			{
-				cleanup_tree(right_tree);
+				//cleanup_tree(right_tree);
 				return (-1);
 			}
 			tmp = create_node(tok, *left_tree, right_tree);
 			if (!tmp)
 			{
-				cleanup_tree(right_tree);
+				//cleanup_tree(right_tree);
 			}
 			*left_tree = tmp;
 		}
