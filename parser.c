@@ -42,11 +42,10 @@ int	parse_expression(char **str, t_tree **left_tree)
 	while (1)
 	{
 		tok = scan_token(*str);
-		if (!tok)
+		if (!tok || tok->type == end)
 			return 0;
-		if (!(tok->type == operation && (tok->value.c == '+' || tok->value.c == '-')))
+		if (!(tok->type == symbol && (tok->value.c == '+' || tok->value.c == '-')))
 		{
-			free(tok);
 			return (0);
 		}
 		else
@@ -54,7 +53,6 @@ int	parse_expression(char **str, t_tree **left_tree)
 			next_token(str);
 			if (parse_term(str, &right_tree) == -1)
 			{
-				free(tok);
 				cleanup_tree(right_tree);
 				return (-1);
 			}
@@ -62,7 +60,6 @@ int	parse_expression(char **str, t_tree **left_tree)
 			if (!tmp)
 			{
 				cleanup_tree(right_tree);
-				free(tok);
 				return (-1);
 			}
 			*left_tree = tmp;
@@ -84,11 +81,10 @@ int	parse_term(char **str, t_tree **left_tree)
 	while (1)
 	{
 		tok = scan_token(*str);
-		if (!tok)
+		if (!tok || tok->type == end)
 			return (0);
-		if (!(tok->type == operation && (tok->value.c == '*' || tok->value.c == '/')))
+		if (!(tok->type == symbol && (tok->value.c == '*' || tok->value.c == '/')))
 		{
-			free(tok);
 			return (0);
 		}
 		else
@@ -96,7 +92,6 @@ int	parse_term(char **str, t_tree **left_tree)
 			next_token(str);
 			if (parse_factor(str, &right_tree) == -1)
 			{
-				free(tok);
 				cleanup_tree(right_tree);
 				return (-1);
 			}
@@ -104,7 +99,6 @@ int	parse_term(char **str, t_tree **left_tree)
 			if (!tmp)
 			{
 				cleanup_tree(right_tree);
-				free(tok);
 			}
 			*left_tree = tmp;
 		}
@@ -117,44 +111,39 @@ int parse_factor(char **str, t_tree **tree)
 	t_tree	*tmp;
 
 	tok = scan_token(*str);
-	if (!tok) // check if scan_token returned a valid token
+	if (!tok || tok->type == end) // check if scan_token returned a valid token
 	{
 		printf("Parse error: unexpected end of input\n");
 		return -1;
 	}
 	next_token(str);
-	if (tok->type == open)
+	if (tok->type == symbol && tok->value.c == '(')
 	{
-		free(tok);
 		if (parse_expression(str, tree) == -1)
 		{
 			return (-1);
 		}
 		// Check if the next token is a close parenthesis
 		tok = scan_token(*str);
-		if (tok && tok->type == close)
+		if (tok && tok->type == symbol && tok->value.c == ')')
 		{
-			free(tok);
 			next_token(str);
 		}
 		else
 		{
 			printf("Parse error: expecting closing parenthesis\n");
-			free(tok);
 			return (-1);
 		}
 	}
-	else if (tok->type == operation && tok->value.c == '-')
+	else if (tok->type == symbol && tok->value.c == '-')
 	{
 		if (parse_factor(str, tree) == -1)
 		{
-			free(tok);
 			return (-1);
 		}
 		tmp = create_node(tok, *tree, 0);
 		if (!tmp)
 		{
-			free(tok);
 			return (-1);
 		}
 	}
@@ -163,14 +152,12 @@ int parse_factor(char **str, t_tree **tree)
 		*tree = factory(tok);
 		if (!*tree)
 		{
-			free(tok);
 			return (-1);
 		}
 	}
 	else
 	{
 		printf("Parse error: unexpected token\n");
-		free(tok);
 		return (-1);
 	}
 	return 0;

@@ -1,5 +1,7 @@
 #include "eval.h"
 
+t_tree	*tok_list;
+
 int main(int argc, char **argv)
 {
 	char	*expr;
@@ -15,17 +17,12 @@ int main(int argc, char **argv)
 	}
 	tree = 0;
 
-	t_tree	*list = tokenizer(expr);
-	printf("done tokenising I think %p\n", list);
-	print_token_list(list);
-	cleanup_token_list(list);
-	// exit(0);
-	return (0);
+	tok_list = tokenizer(expr);
 
 	if ((status = parse_expression(&expr, &tree)) != -1)
 	{
 		tok = scan_token(expr);
-		if (tree == NULL || tok)
+		if (tree == NULL || (tok && tok->type != end))
 		{
 			printf("Error while parsing tree\n");
 			status = 1;

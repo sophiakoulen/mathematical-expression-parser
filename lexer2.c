@@ -15,14 +15,12 @@ t_tree	*tokenizer(char *str)
 	start = NULL;
 	while (1)
 	{
-		// printf("added this toke: %c\n", *str);
 		tok = lexer2(&str);
 		if (tok == NULL)
-			return (NULL);
+			return (start);
 		tmp = factory(tok);
 		if (tmp == NULL)
 			return (NULL);
-		// end setup
 		if (start == NULL)
 		{
 			start = tmp;
@@ -32,6 +30,7 @@ t_tree	*tokenizer(char *str)
 		{
 			current->right = tmp;
 			tmp->left = current;
+			tmp->right = 0;
 			current = tmp;
 		}
 		if (tok->type == end)
@@ -39,6 +38,10 @@ t_tree	*tokenizer(char *str)
 	}
 }
 
+/*
+	Return a token and move the string pointer to the next character
+	to analyse.
+*/
 t_token	*lexer2(char **str)
 {
 	t_token *tok;
@@ -53,17 +56,22 @@ t_token	*lexer2(char **str)
 		return (NULL);
 	}
 	if (**str == '\0')
+	{
+		printf("token: end\n");
 		tok->type = end;
+	}
 	else if (strchr(SYMBOLS, **str))
 	{
 		tok->type = symbol;
 		tok->value.c = **str;
+		printf("token: %c\n", tok->value.c);
 		(*str)++;
 	}
 	else if (isdigit(**str))
 	{
 		tok->type = value;
 		tok->value.v = parse_float(str);
+		printf("token: %f\n", tok->value.v);
 	}
 	else
 		// TODO: here we can add the code to detect multi character word as identifiers
@@ -74,6 +82,7 @@ t_token	*lexer2(char **str)
 		// whatever this does, it would need to advance str
 	{
 		tok->type = invalid;
+		printf("token: invalid\n");
 		(*str)++;
 	}
 	return (tok);
