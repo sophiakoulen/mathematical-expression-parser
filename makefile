@@ -23,6 +23,15 @@ tree_ops.c \
 args.c \
 cleanup.c
 
+ifdef CHECK_MALLOC
+	SRCS += fake_malloc/fake_malloc.c
+	CFLAGS += -D LIMIT=$(CHECK_MALLOC)
+endif
+
+# To test malloc failure:
+# 	compile with "make CHECK_MALLOC={?}"
+#	This will ensure the ?-th malloc or calloc call will fail.
+
 OBJS = $(SRCS:%.c=%.o)
 
 NAME = eval
@@ -30,7 +39,7 @@ NAME = eval
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lm -o $@
+	$(CC) $(CFLAGS) $(OBJS) -lm -ldl -o $@
 
 clean:
 	$(RM) $(OBJS)
