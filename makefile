@@ -12,22 +12,30 @@ ifdef FSAN
 	CFLAGS += -fsanitize=address
 endif
 
-SRCS = main.c \
-evaluate.c \
-lexer.c \
-parse_float.c \
-parser.c \
-print.c \
-print_tree.c \
-tree_ops.c \
-args.c \
-cleanup.c
+FILE_NAMES = main \
+evaluate \
+lexer \
+parse_float \
+parser \
+print \
+print_tree \
+tree_ops \
+args \
+cleanup
 
-OBJS = $(SRCS:%.c=%.o)
+SRCS = $(addsuffix .c, $(addprefix srcs/, $(FILE_NAMES)))
+OBJS = $(addsuffix .o, $(addprefix objs/, $(FILE_NAMES)))
+
+SRCS_DIR = srcs/
+OBJS_DIR = objs/
 
 NAME = eval
 
 all: $(NAME)
+
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	@mkdir -p objs
+	$(CC) $(CFLAGS) -c -o $@ -Iinclude $<
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -lm -o $@
