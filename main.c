@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
 	if ((status = parse_expression(&expr, &tree)) != -1)
 	{
-		tok = scan_token(expr);
+		tok = scan_token();
 		if (tree == NULL || (tok && tok->type != end))
 		{
 			printf("Error while parsing tree\n");
